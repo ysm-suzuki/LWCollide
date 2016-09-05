@@ -5,9 +5,25 @@ namespace LWCollide
 {
     public class Math
     {
-        public float Cross(LineSegment line1, LineSegment line2)
+        public float Cross(Vector vector1, Vector vector2)
         {
-            return line1.x * line2.y - line2.x * line1.y;
+            return vector1.x * vector2.y - vector2.x * vector1.y;
+        }
+
+        public Point Intersection(LineSegment line1, LineSegment line2)
+        {
+            Vector vector1 = Vector.Create(line1.from, line1.to);
+            Vector vector2 = Vector.Create(line1.from, line2.from);
+            Vector vector3 = Vector.Create(line1.from, line2.to);
+            float cross1 = Cross(vector1, vector2);
+            float cross2 = Cross(vector1, vector3);
+            float ratio = cross1 / (cross1 + cross2);
+
+            return new Point
+            {
+                x = line1.x + vector1.x * ratio,
+                y = line1.y + vector1.y * ratio
+            };
         }
     }
 }
