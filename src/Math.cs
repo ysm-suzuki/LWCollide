@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using LWCollide.Core;
 
 namespace LWCollide
@@ -24,6 +25,12 @@ namespace LWCollide
                 x = line1.x + vector1.x * ratio,
                 y = line1.y + vector1.y * ratio
             };
+        }
+
+        // shape: A convex polygon with clockwise rotation only.
+        public bool IsWithIn(List<LineSegment> shape)
+        {
+            return false;
         }
     }
 }
