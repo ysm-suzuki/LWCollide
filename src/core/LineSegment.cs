@@ -37,6 +37,16 @@ namespace LWCollide
             {
                 return "LineSegment: from (" + x + ", " + y + ") to (" + x + ", " + y + ")";
             }
+
+
+            public static LineSegment operator +(LineSegment lineSegment, Vector vector)
+            {
+                return new LineSegment
+                {
+                    from = lineSegment.from + vector,
+                    to = lineSegment.to + vector
+                };
+            }
         }
     }
 }

@@ -6,12 +6,12 @@ namespace LWCollide
 {
     public class Math
     {
-        public float Cross(Vector vector1, Vector vector2)
+        public static float Cross(Vector vector1, Vector vector2)
         {
             return vector1.x * vector2.y - vector2.x * vector1.y;
         }
 
-        public Point Intersection(LineSegment line1, LineSegment line2)
+        public static Point Intersection(LineSegment line1, LineSegment line2)
         {
             Vector vector1 = Vector.Create(line1.from, line1.to);
             Vector vector2 = Vector.Create(line1.from, line2.from);
@@ -28,9 +28,13 @@ namespace LWCollide
         }
 
         // shape: A convex polygon with clockwise rotation only.
-        public bool IsWithIn(List<LineSegment> shape)
+        public static bool IsWithIn(Point point, List<LineSegment> shape)
         {
-            return false;
+            foreach (LineSegment line in shape)
+                if (Cross(Vector.Create(point, line.from), Vector.Create(point, line.to)) > 0)
+                    return false;
+            
+            return true;
         }
     }
 }

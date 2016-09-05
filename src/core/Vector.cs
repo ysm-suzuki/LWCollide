@@ -48,6 +48,16 @@ namespace LWCollide
             {
                 return "Vector: x = " + x + ", y = " + y;
             }
+
+
+            public static Vector operator +(Vector vector1, Vector vector2)
+            {
+                return new Vector
+                {
+                    x = vector1.x + vector2.x,
+                    y = vector1.y + vector2.y
+                };
+            }
         }
     }
 }
