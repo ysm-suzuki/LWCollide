@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using LWCollide.Core;
+
+using Atagoal.Core;
 
 namespace LWCollide
 {
