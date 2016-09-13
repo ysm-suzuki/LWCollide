@@ -9,11 +9,13 @@ namespace LWCollide
     public class LWShape
     {
         private List<LineSegment> _shape = new List<LineSegment>();
+        private Point _position = new Point();
 
         // vertexes: Convex polygon vertexes with clockwise rotation only.
-        public static LWShape Create(List<Point> vertexes)
+        public static LWShape Create(Point position, List<Point> vertexes)
         {
             LWShape lwShape = new LWShape();
+            lwShape.SetPosition(position);
             lwShape.SetShape(vertexes);
             return lwShape;
         }
@@ -36,11 +38,19 @@ namespace LWCollide
                     ));
         }
 
+        public void SetPosition(Point position)
+        {
+            _position.x = position.x;
+            _position.y = position.y;
+        }
+
+        // The point is with in this shape or not.
         public bool IsWithIn(Point point)
         {
             return LWCollide.Math.IsWithIn(point, _shape);
         }
 
+        // this shape move by velocity will collide a target or not
         public bool Collided(Vector velocity, LWShape target)
         {
             foreach (LineSegment lineSegment in _shape)
@@ -50,6 +60,7 @@ namespace LWCollide
             return false;
         }
 
+        // this shape is colliding a target or not
         public bool Collided(LWShape target)
         {
             return Collided(new Vector(), target);
@@ -57,7 +68,11 @@ namespace LWCollide
 
         public Point GetCollisionPoint(Vector velocity, LWShape target)
         {
-            if (_cache.isRegistered(_shape, target.GetShape(), velocity))
+            if (_cache.isRegistered(_shape,
+                                    target.GetSegments(),
+                                    _position,
+                                    target.GetPosition(),
+                                    velocity))
                 return _cache.GetCollisionPoint();
 
             CalculateCollision(velocity, target);
@@ -66,14 +81,49 @@ namespace LWCollide
 
         public Distance GetCollisionDistance(Vector velocity, LWShape target)
         {
-            if (_cache.isRegistered(_shape, target.GetShape(), velocity))
+            if (_cache.isRegistered(_shape,
+                                    target.GetSegments(),
+                                    _position,
+                                    target.GetPosition(),
+                                    velocity))
                 return _cache.GetCollisionDistance();
 
             CalculateCollision(velocity, target);
             return _cache.GetCollisionDistance();
         }
 
-        public List<LineSegment> GetShape()
+        public Vector GetPrimaryVector(Vector velocity, LWShape target)
+        {
+            if (_cache.isRegistered(_shape,
+                                    target.GetSegments(),
+                                    _position,
+                                    target.GetPosition(),
+                                    velocity))
+                return _cache.GetPrimaryVelocity();
+
+            CalculateCollision(velocity, target);
+            return _cache.GetPrimaryVelocity();
+        }
+
+        public Vector GetSecondaryVelocity(Vector velocity, LWShape target)
+        {
+            if (_cache.isRegistered(_shape,
+                                    target.GetSegments(),
+                                    _position,
+                                    target.GetPosition(),
+                                    velocity))
+                return _cache.GetSecondaryVelocity();
+
+            CalculateCollision(velocity, target);
+            return _cache.GetSecondaryVelocity();
+        }
+
+        public Point GetPosition()
+        {
+            return _position.Clone();
+        }
+
+        public List<LineSegment> GetSegments()
         {
             return new List<LineSegment>(_shape);
         }
@@ -83,27 +133,41 @@ namespace LWCollide
         {
             private List<LineSegment> _originalShape = null;
             private List<LineSegment> _targetShape = null;
+            private Point _originalPosition = null;
+            private Point _targetPosition = null;
             private Vector _velocity = null;
             private Distance _collisionDistance = null;
             private Point _collisionPoint = null;
+            private Vector _primary = null;
+            private Vector _secondary = null;
 
             public void Register(
                     List<LineSegment> originalShape,
                     List<LineSegment> targetShape,
+                    Point originalPosition,
+                    Point targetPosition,
                     Vector velocity,
                     Point collisionPoint,
-                    Distance collisionDistance)
+                    Distance collisionDistance,
+                    Vector primary,
+                    Vector secondary)
             {
                 _originalShape = originalShape;
                 _targetShape = targetShape;
+                _originalPosition = originalPosition;
+                _targetPosition = targetPosition;
                 _velocity = velocity;
                 _collisionPoint = collisionPoint;
                 _collisionDistance = collisionDistance;
+                _primary = primary;
+                _secondary = secondary;
             }
 
             public bool isRegistered(
                     List<LineSegment> originalShape,
                     List<LineSegment> targetShape,
+                    Point originalPosition,
+                    Point targetPosition,
                     Vector velocity)
             {
                 if (_originalShape == null
@@ -123,6 +187,12 @@ namespace LWCollide
                     if (!_targetShape[i].Equals(targetShape))
                         return false;
 
+                if (!_originalPosition.Equals(originalPosition))
+                    return false;
+
+                if (!_targetPosition.Equals(targetPosition))
+                    return false;
+
                 return true;
             }
 
@@ -134,6 +204,28 @@ namespace LWCollide
             public Distance GetCollisionDistance()
             {
                 return _collisionDistance;
+            }
+
+            public Vector GetPrimaryVelocity()
+            {
+                return _primary;
+            }
+
+            public Vector GetSecondaryVelocity()
+            {
+                return _secondary;
+            }
+
+
+            public void Clear()
+            {
+                _originalShape = null;
+                _targetShape = null;
+                _velocity = null;
+                _collisionDistance = null;
+                _collisionPoint = null;
+                _primary = null;
+                _secondary = null;
             }
         }
 
@@ -148,10 +240,11 @@ namespace LWCollide
                 y = float.MaxValue
             };
             Point collisionPoint = Point.CreateInvalidPoint();
+            LineSegment collisionLine = null;
 
             foreach (LineSegment originalLineSegment in _shape)
             {
-                foreach (LineSegment targetLineSegment in target.GetShape())
+                foreach (LineSegment targetLineSegment in target.GetSegments())
                 {
                     if (target.IsWithIn(originalLineSegment.from)
                         || !target.IsWithIn(originalLineSegment.from + velocity))
@@ -167,15 +260,34 @@ namespace LWCollide
                         collisionPoint = intersection;
                         min = Distance.Create(originalLineSegment.from, intersection);
                     }
+
+                    collisionLine = targetLineSegment.Clone();
                 }
             }
 
+            // does not collide
+            if (collisionPoint.IsInvalidPoint())
+                return;
+            if (collisionLine == null)
+                return;
+
+
+            float primaryVectorLength = (float)System.Math.Sqrt((double)min.GetPower());
+            float secondaryVectorLength = (float)System.Math.Sqrt((double)velocity.GetPower()) - primaryVectorLength;
+
+            Vector primaryVector = velocity * (float)(primaryVectorLength / System.Math.Sqrt((double)velocity.GetPower()));
+            Vector secondaryVector = LWCollide.Math.GetLineVector(velocity, collisionLine) * secondaryVectorLength;
+
             _cache.Register(
                 _shape,
-                target.GetShape(),
+                target.GetSegments(),
+                _position,
+                target.GetPosition(),
                 velocity,
                 collisionPoint.Clone(),
-                min.Clone());
+                min.Clone(),
+                primaryVector,
+                secondaryVector);
         }
     }
 }
