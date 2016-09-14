@@ -9,7 +9,7 @@ namespace LWCollide
     {
         public class LWCollideTest
         {
-            public static void Main()
+            public static void Main(string[] args)
             {
                 new LWCollideTest().Run();
             }
