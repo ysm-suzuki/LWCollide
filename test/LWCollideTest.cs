@@ -16,10 +16,8 @@ namespace LWCollide
 
             public void Run()
             {
-
-
-                Console.WriteLine("Press any key to exit.");
-                Console.ReadKey();
+                var mathTest = new LWCollideMathTest();
+                mathTest.InnerTest();
             }
         }
     }

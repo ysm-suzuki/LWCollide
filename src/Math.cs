@@ -10,12 +10,20 @@ namespace LWCollide
         // Inner Product
         public static float Inner(Vector vector1, Vector vector2)
         {
+            if (vector1 == null
+                || vector2 == null)
+                return 0;
+
             return vector1.x * vector2.x + vector2.y * vector1.y;
         }
 
         // Cross Product
         public static float Cross(Vector vector1, Vector vector2)
         {
+            if (vector1 == null
+                || vector2 == null)
+                return 0;
+
             return vector1.x * vector2.y - vector2.x * vector1.y;
         }
 
