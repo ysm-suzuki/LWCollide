@@ -14,6 +14,9 @@ namespace LWCollide
                 Console.WriteLine("LWCollideMathTest cTor");
             }
             
+            //-----------------------------------------------------------------------------
+            // Test Inner().
+            // This calculate inner product by two vectors.
             public void InnerTest()
             {
                 Console.WriteLine("Test Math.Inner() ... ");
@@ -118,6 +121,9 @@ namespace LWCollide
                 Console.WriteLine("Åù Math.Inner() is green.");
             }
 
+            //-----------------------------------------------------------------------------
+            // Test Cross().
+            // This calculate cross product by two vectors.
             public void CrossTest()
             {
                 Console.WriteLine("Test Math.Cross() ... ");
@@ -220,6 +226,30 @@ namespace LWCollide
                 }
 
                 Console.WriteLine("Åù Math.Cross() is green.");
+            }
+
+            //-----------------------------------------------------------------------------
+            // Test Intersection().
+            // This calculate an intersection point by two line segments.
+            public void IntersectionTest()
+            {
+
+            }
+
+            //-----------------------------------------------------------------------------
+            // Test IsWithIn().
+            // This calculate the point is with in the shape or not.
+            public void IsWithInTest()
+            {
+
+            }
+
+            //-----------------------------------------------------------------------------
+            // Test GetLineVector().
+            // This provide a unit vector of line that is same direction of the vector.
+            public void GetLineVectorTest()
+            {
+
             }
         }
     }
