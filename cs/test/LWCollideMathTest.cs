@@ -43,12 +43,77 @@ namespace LWCollide
                 }
 
                 // parallel
+                float parallelInnerProduct = LWCollide.Math.Inner(
+                   new Vector
+                   {
+                       x = 1,
+                       y = 0,
+                   },
+                   new Vector
+                   {
+                       x = 1,
+                       y = 0,
+                   }
+                   );
+
+
+                if (parallelInnerProduct == 1)
+                    Console.WriteLine("  Åõ Testing parallel inner product Passed.");
+                else
+                {
+                    Console.WriteLine("  Å~ Testing parallel inner product Failed.");
+                    Console.WriteLine("Åù Math.Inner() is red.");
+                    return;
+                }
 
                 // acute angle
+                float acuteAngleInnerProduct = LWCollide.Math.Inner(
+                   new Vector
+                   {
+                       x = 1,
+                       y = 2,
+                   },
+                   new Vector
+                   {
+                       x = 3,
+                       y = 4,
+                   }
+                   );
+
+
+                if (acuteAngleInnerProduct == 11)
+                    Console.WriteLine("  Åõ Testing acute inner product Passed.");
+                else
+                {
+                    Console.WriteLine("  Å~ Testing acute inner product Failed.");
+                    Console.WriteLine("Åù Math.Inner() is red.");
+                    return;
+                }
 
                 // obtuse angle
+                float obtuseAngleInnerProduct = LWCollide.Math.Inner(
+                   new Vector
+                   {
+                       x = 1,
+                       y = 2,
+                   },
+                   new Vector
+                   {
+                       x = -3,
+                       y = -4,
+                   }
+                   );
 
-                // random
+
+                if (acuteAngleInnerProduct == -11)
+                    Console.WriteLine("  Åõ Testing obtuse inner product Passed.");
+                else
+                {
+                    Console.WriteLine("  Å~ Testing obtuse inner product Failed.");
+                    Console.WriteLine("Åù Math.Inner() is red.");
+                    return;
+                }
+
 
                 Console.WriteLine("Åù Math.Inner() is green.");
             }
@@ -58,14 +123,101 @@ namespace LWCollide
                 Console.WriteLine("Test Math.Cross() ... ");
 
                 // right angle
+                float rightAngleCrossProduct = LWCollide.Math.Cross(
+                    new Vector
+                    {
+                        x = 1,
+                        y = 0,
+                    },
+                    new Vector
+                    {
+                        x = 0,
+                        y = 1,
+                    }
+                    );
+
+
+                if (rightAngleCrossProduct == 1)
+                    Console.WriteLine("  Åõ Testing right angle cross product Passed.");
+                else
+                {
+                    Console.WriteLine("  Å~ Testing right angle cross product Failed.");
+                    Console.WriteLine("Åù Math.Inner() is red.");
+                    return;
+                }
 
                 // parallel
+                float parallelCrossProduct = LWCollide.Math.Cross(
+                    new Vector
+                    {
+                        x = 1,
+                        y = 2,
+                    },
+                    new Vector
+                    {
+                        x = 1,
+                        y = 2,
+                    }
+                    );
+
+
+                if (parallelCrossProduct == 0)
+                    Console.WriteLine("  Åõ Testing parallel cross product Passed.");
+                else
+                {
+                    Console.WriteLine("  Å~ Testing parallel cross product Failed.");
+                    Console.WriteLine("Åù Math.Inner() is red.");
+                    return;
+                }
 
                 // acute angle
+                float acuteAngleCrossProduct = LWCollide.Math.Cross(
+                    new Vector
+                    {
+                        x = 1,
+                        y = 2,
+                    },
+                    new Vector
+                    {
+                        x = 3,
+                        y = 4,
+                    }
+                    );
+
+
+                if (acuteAngleCrossProduct == -2)
+                    Console.WriteLine("  Åõ Testing acute angle cross product Passed.");
+                else
+                {
+                    Console.WriteLine("  Å~ Testing acute angle cross product Failed.");
+                    Console.WriteLine("Åù Math.Inner() is red.");
+                    return;
+                }
+                    
 
                 // obtuse angle
+                float obtuseAngleCrossProduct = LWCollide.Math.Cross(
+                    new Vector
+                    {
+                        x = 1,
+                        y = 2,
+                    },
+                    new Vector
+                    {
+                        x = -3,
+                        y = -4,
+                    }
+                    );
 
-                // random
+
+                if (obtuseAngleCrossProduct == 2)
+                    Console.WriteLine("  Åõ Testing obtuse angle cross product Passed.");
+                else
+                {
+                    Console.WriteLine("  Å~ Testing obtuse angle cross product Failed.");
+                    Console.WriteLine("Åù Math.Inner() is red.");
+                    return;
+                }
 
                 Console.WriteLine("Åù Math.Cross() is green.");
             }

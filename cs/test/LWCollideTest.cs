@@ -18,6 +18,7 @@ namespace LWCollide
             {
                 var mathTest = new LWCollideMathTest();
                 mathTest.InnerTest();
+                mathTest.CrossTest();
             }
         }
     }
