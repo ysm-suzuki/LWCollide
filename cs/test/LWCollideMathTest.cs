@@ -108,7 +108,7 @@ namespace LWCollide
                    );
 
 
-                if (acuteAngleInnerProduct == -11)
+                if (obtuseAngleInnerProduct == -11)
                     Console.WriteLine("  Åõ Testing obtuse inner product Passed.");
                 else
                 {
