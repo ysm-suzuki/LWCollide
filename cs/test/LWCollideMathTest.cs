@@ -41,7 +41,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing right angle inner product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
 
@@ -65,7 +65,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing parallel inner product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
 
@@ -89,7 +89,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing acute inner product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
 
@@ -113,7 +113,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing obtuse inner product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
 
@@ -148,7 +148,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing right angle cross product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
 
@@ -172,7 +172,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing parallel cross product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
 
@@ -196,7 +196,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing acute angle cross product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
                     
@@ -221,7 +221,7 @@ namespace LWCollide
                 else
                 {
                     Console.WriteLine("  Å~ Testing obtuse angle cross product Failed.");
-                    Console.WriteLine("Åù Math.Inner() is red.");
+                    Console.WriteLine("Å~ Math.Inner() is red.");
                     return;
                 }
 
