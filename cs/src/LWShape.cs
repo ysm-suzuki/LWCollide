@@ -27,13 +27,13 @@ namespace LWCollide
                 _shape.Add(LineSegment.Create(
                         new Point
                         {
-                            x = vertexes[i].x,
-                            y = vertexes[i].y
+                            x = _position.x + vertexes[i].x,
+                            y = _position.y + vertexes[i].y
                         },
                         new Point
                         {
-                            x = vertexes[(i + 1) % count].x,
-                            y = vertexes[(i + 1) % count].y
+                            x = _position.x + vertexes[(i + 1) % count].x,
+                            y = _position.y + vertexes[(i + 1) % count].y
                         }
                     ));
         }
