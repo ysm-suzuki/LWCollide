@@ -16,6 +16,9 @@ namespace LWCollide
 
             public void Run()
             {
+                var shapeTest = new LWShapeTest();
+                shapeTest.GetCollisionPointTest();
+
                 var mathTest = new LWCollideMathTest();
                 mathTest.InnerTest();
                 mathTest.CrossTest();

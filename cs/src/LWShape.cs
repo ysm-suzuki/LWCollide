@@ -68,19 +68,25 @@ namespace LWCollide
 
         public Point GetCollisionPoint(Vector velocity, LWShape target)
         {
+            if (target == null)
+                return Point.CreateInvalidPoint();
+            
             if (_cache.isRegistered(_shape,
                                     target.GetSegments(),
                                     _position,
                                     target.GetPosition(),
                                     velocity))
                 return _cache.GetCollisionPoint();
-
+            
             CalculateCollision(velocity, target);
             return _cache.GetCollisionPoint();
         }
 
         public Distance GetCollisionDistance(Vector velocity, LWShape target)
         {
+            if (target == null)
+                return Distance.Create();
+            
             if (_cache.isRegistered(_shape,
                                     target.GetSegments(),
                                     _position,
@@ -94,6 +100,9 @@ namespace LWCollide
 
         public Vector GetPrimaryVector(Vector velocity, LWShape target)
         {
+            if (target == null)
+                return Vector.Create();
+
             if (_cache.isRegistered(_shape,
                                     target.GetSegments(),
                                     _position,
@@ -107,6 +116,9 @@ namespace LWCollide
 
         public Vector GetSecondaryVelocity(Vector velocity, LWShape target)
         {
+            if (target == null)
+                return Vector.Create();
+
             if (_cache.isRegistered(_shape,
                                     target.GetSegments(),
                                     _position,
@@ -179,6 +191,9 @@ namespace LWCollide
                     || _targetShape.Count != targetShape.Count)
                     return false;
 
+                if (!_velocity.Equals(velocity))
+                    return false;
+
                 for (int i = 0; i < _originalShape.Count; i++)
                     if (!_originalShape[i].Equals(originalShape))
                         return false;
@@ -234,6 +249,9 @@ namespace LWCollide
 
         private void CalculateCollision(Vector velocity, LWShape target)
         {
+            if (target == null)
+                return;
+
             Distance min = new Distance
             {
                 x = float.MaxValue,
@@ -247,13 +265,16 @@ namespace LWCollide
                 foreach (LineSegment targetLineSegment in target.GetSegments())
                 {
                     if (target.IsWithIn(originalLineSegment.from)
-                        || !target.IsWithIn(originalLineSegment.from + velocity))
+                        && !target.IsWithIn(originalLineSegment.from + velocity))
                         continue;
 
                     LineSegment trajectory = LineSegment.Create(
                             originalLineSegment.from, originalLineSegment.from + velocity
                         );
                     Point intersection = LWCollide.Math.Intersection(trajectory, targetLineSegment);
+
+                    if (intersection.IsInvalidPoint())
+                        continue;
 
                     if (Distance.Create(originalLineSegment.from, intersection).GetPower() < min.GetPower())
                     {
@@ -266,10 +287,22 @@ namespace LWCollide
             }
 
             // does not collide
-            if (collisionPoint.IsInvalidPoint())
+            if (collisionPoint.IsInvalidPoint()
+                || collisionLine == null)
+            {
+                _cache.Register(
+                _shape,
+                target.GetSegments(),
+                _position,
+                target.GetPosition(),
+                velocity,
+                collisionPoint.Clone(),
+                min.Clone(),
+                Vector.Create(),
+                Vector.Create());
+
                 return;
-            if (collisionLine == null)
-                return;
+            }
 
 
             float primaryVectorLength = (float)System.Math.Sqrt((double)min.GetPower());
