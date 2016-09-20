@@ -40,8 +40,18 @@ namespace LWCollide
 
         public void SetPosition(Point position)
         {
+            Distance diff = Distance.Create(_position, position);
+
             _position.x = position.x;
             _position.y = position.y;
+
+            foreach (LineSegment lineSegment in _shape)
+            {
+                lineSegment.from.x += diff.x;
+                lineSegment.from.y += diff.y;
+                lineSegment.to.x += diff.x;
+                lineSegment.to.y += diff.y;
+            }
         }
 
         // The point is with in this shape or not.
@@ -264,22 +274,24 @@ namespace LWCollide
             {
                 foreach (LineSegment targetLineSegment in target.GetSegments())
                 {
-                    if (target.IsWithIn(originalLineSegment.from)
-                        && !target.IsWithIn(originalLineSegment.from + velocity))
+                    Point originalPoint = originalLineSegment.from;
+
+                    if (target.IsWithIn(originalPoint)
+                        && !target.IsWithIn(originalPoint + velocity))
                         continue;
 
                     LineSegment trajectory = LineSegment.Create(
-                            originalLineSegment.from, originalLineSegment.from + velocity
+                            originalPoint, originalPoint + velocity
                         );
                     Point intersection = LWCollide.Math.Intersection(trajectory, targetLineSegment);
 
                     if (intersection.IsInvalidPoint())
                         continue;
 
-                    if (Distance.Create(originalLineSegment.from, intersection).GetPower() < min.GetPower())
+                    if (Distance.Create(originalPoint, intersection).GetPower() < min.GetPower())
                     {
                         collisionPoint = intersection;
-                        min = Distance.Create(originalLineSegment.from, intersection);
+                        min = Distance.Create(originalPoint, intersection);
                     }
 
                     collisionLine = targetLineSegment.Clone();
