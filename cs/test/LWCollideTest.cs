@@ -22,6 +22,9 @@ namespace LWCollide
                 var mathTest = new LWCollideMathTest();
                 mathTest.InnerTest();
                 mathTest.CrossTest();
+
+                var intersection = new LWCollideMathIntersectionTest();
+                intersection.Run();
             }
         }
     }

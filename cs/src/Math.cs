@@ -40,10 +40,6 @@ namespace LWCollide
             if (cross1 * cross2 > 0)
                 return Point.CreateInvalidPoint();
 
-            // has no intersection (lines are parallel.)
-            if (cross1 + cross2 == 0)
-                return Point.CreateInvalidPoint();
-
             float ratio = System.Math.Abs(cross1) / (System.Math.Abs(cross1) + System.Math.Abs(cross2));
 
             Point intersection = new Point
